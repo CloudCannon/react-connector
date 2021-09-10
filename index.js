@@ -1,35 +1,37 @@
-import React from 'react';
+const React = require('react');
 
-export default function CloudCannonConnect(Component) {
-	return class LivePageComponent extends React.Component{
-		constructor(props) {
-			super(props);
-			this.state = {}
-		}
-		
-		componentDidMount() {
-			window.CloudCannon = {
-				trigger: (eventName, frontMatter) => {
-					this.setState(frontMatter);
-				}
-			};
-		}
-		
-		componentWillUnmount() {
-			if (window.CloudCannon) {
-				window.CloudCannon.trigger = null;
+module.exports = {
+	CloudCannonConnect: function (Component) {
+		return class LivePageComponent extends React.Component{
+			constructor(props) {
+				super(props);
+				this.state = {}
 			}
-		}
-
-		render() {
-			const hydratedProps = {
-				...this.props, 
-				page: {
-					...this.props.page, 
-					...this.state,
+			
+			componentDidMount() {
+				window.CloudCannon = {
+					trigger: (eventName, frontMatter) => {
+						this.setState(frontMatter);
+					}
+				};
+			}
+			
+			componentWillUnmount() {
+				if (window.CloudCannon) {
+					window.CloudCannon.trigger = null;
 				}
 			}
-			return React.createElement(Component, hydratedProps, null);
+
+			render() {
+				const hydratedProps = {
+					...this.props, 
+					page: {
+						...this.props.page, 
+						...this.state,
+					}
+				}
+				return React.createElement(Component, hydratedProps, null);
+			}
 		}
 	}
 }
