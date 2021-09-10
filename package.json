@@ -3,6 +3,7 @@
 	"version": "1.0.1",
 	"description": "A React connector for activating live visual editing in CloudCannon",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
