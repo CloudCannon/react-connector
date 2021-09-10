@@ -29,7 +29,7 @@ export default function CloudCannonConnect(Component) {
 					...this.state,
 				}
 			}
-			return <Component {...hydratedProps} />;
+			return React.createElement(Component, hydratedProps, null);
 		}
 	}
 }
