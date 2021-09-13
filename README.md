@@ -8,11 +8,13 @@
 
 Using a React based SSG? Want to see give your editors a live visual editing experience? Use the React Connector and connect CloudCannon.
 
+## Installation
+
 ```
 npm i @cloudcannon/react-connector
 ```
 
-## Next JS Install
+## Next JS Integration
 
 Update the code in `pages/_app.jsx` from:
 
