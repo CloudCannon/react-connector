@@ -1,12 +1,14 @@
 {
 	"name": "@cloudcannon/react-connector",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "A React connector for activating live visual editing in CloudCannon",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 0"
 	},
-	"files": ["index.js"],
+	"files": [
+		"index.js"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/CloudCannon/react-connector.git"
