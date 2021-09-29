@@ -36,3 +36,22 @@ export default function App({ Component, pageProps }) {
 ```
 
 In CloudCannon will now push through new page props from your editors updates. 
+
+### Modifying the props
+
+If your props are modified in the `getStaticProps` function you can mirror those same operations. Below is an example of 
+the `processProps` function which is passed the props before it is injected into the new props. This defaults to an identity
+function which passes the props directly through.
+
+```
+import { CloudCannonConnect } from '@cloudcannon/react-connector'
+
+export default function App({ Component, pageProps }) {
+	const AppComponent = CloudCannonConnect(Component, {
+		processProps: (props) => {
+			return props;
+		}
+	});
+	return <AppComponent {...pageProps}/>
+}
+```
