@@ -24,7 +24,7 @@ module.exports = {
 				document.addEventListener('cloudcannon:load', this.onLoadEventListener);
 				document.addEventListener('cloudcannon:update', this.onUpdateEventListener);
 				if (window.CloudCannon) {
-					onCloudCannonLoad(window.CloudCannon);
+					this.onCloudCannonLoad(window.CloudCannon);
 				}
 			}
 
