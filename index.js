@@ -33,7 +33,7 @@ module.exports = {
 					const latestValue = await CloudCannon.value();
 					this.setState(latestValue);
 				} catch(fetchError) {
-					consolw.warn('Failed to fetch latest page props', fetchError);
+					console.warn('Failed to fetch latest page props', fetchError);
 				}
 			}
 
@@ -55,7 +55,7 @@ module.exports = {
 						...this.state,
 					}
 				}
-				return React.createElement(Component, hydratedProps, null);
+				return React.createElement(Component, hydratedProps, this.props.children);
 			}
 		}
 	}
