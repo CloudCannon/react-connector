@@ -1,6 +1,6 @@
 {
 	"name": "@cloudcannon/react-connector",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "A React connector for activating live visual editing in CloudCannon",
 	"main": "index.js",
 	"scripts": {
