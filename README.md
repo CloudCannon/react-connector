@@ -37,6 +37,25 @@ export default function App({ Component, pageProps }) {
 
 In CloudCannon will now push through new page props from your editors updates. 
 
+### CloudCannon options
+
+By default CloudCannon passes through processed markdown as HTML and new files as blobs. Both of these options are configurable
+using the `valueOptions` parameter. If you have a markdown processor built into your component set `keepMarkdownAsHTML`
+to false, this will prevent any double processing conflicts.
+
+```
+import { CloudCannonConnect } from '@cloudcannon/react-connector'
+
+export default function App({ Component, pageProps }) {
+	const AppComponent = CloudCannonConnect(Component, {
+		valueOptions: {
+			keepMarkdownAsHTML: false,
+			preferBlobs: true
+		}
+	});
+	return <AppComponent {...pageProps}/>
+}
+```
 ### Modifying the props
 
 If your props are modified in the `getStaticProps` function you can mirror those same operations. Below is an example of 

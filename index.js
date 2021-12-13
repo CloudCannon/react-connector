@@ -30,7 +30,7 @@ module.exports = {
 
 			async loadNewPropsFromCloudCannon(CloudCannon) {
 				try {
-					const latestValue = await CloudCannon.value();
+					const latestValue = await CloudCannon.value(options?.valueOptions);
 					this.setState(latestValue);
 				} catch(fetchError) {
 					console.warn('Failed to fetch latest page props', fetchError);
