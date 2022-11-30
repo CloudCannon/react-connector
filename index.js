@@ -10,7 +10,7 @@ module.exports = {
 		return class LivePageComponent extends React.Component{
 			constructor(props) {
 				super(props);
-				this.state = {}
+				this.state = props.page?.data || {};
 				this.onLoadEventListener = (e) => {
 					this.onCloudCannonLoad(e.detail.CloudCannon);
 				};
@@ -51,8 +51,10 @@ module.exports = {
 				const hydratedProps = {
 					...this.props, 
 					page: {
-						...processProps(this.props.page),
-						...this.state,
+						...this.props.page,
+						data: {
+							...processProps(this.state)
+						},
 					}
 				}
 				return React.createElement(Component, hydratedProps, this.props.children);
