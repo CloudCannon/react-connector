@@ -1,64 +1,92 @@
-const React = require('react');
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-function identity(props) {
-	return props;
-}
+const CloudCannonContext = createContext();
 
-module.exports = {
-	CloudCannonConnect: function (Component, options = {}) {
-		const processProps = options?.processProps || identity;
-		return class LivePageComponent extends React.Component{
-			constructor(props) {
-				super(props);
-				this.state = props.page?.data || {};
-				this.onLoadEventListener = (e) => {
-					this.onCloudCannonLoad(e.detail.CloudCannon);
-				};
+export const useCloudCannon = () => {
+  const context = useContext(CloudCannonContext);
+  if (!context) {
+    throw new Error(
+      "useCloudCannon must be used within a CloudCannonProvider"
+    );
+  }
+  return context;
+};
 
-				this.onUpdateEventListener = (e) => {
-					this.loadNewPropsFromCloudCannon(e.detail.CloudCannon);
-				};
-			}
-			
-			componentDidMount() {
-				document.addEventListener('cloudcannon:load', this.onLoadEventListener);
-				document.addEventListener('cloudcannon:update', this.onUpdateEventListener);
-				if (window.CloudCannon) {
-					this.onCloudCannonLoad(window.CloudCannon);
-				}
-			}
+export const CloudCannonProvider = ({
+  children,
+  options = {},
+}) => {
+  const [state, setState] = useState({});
+  const processProps =
+    options?.processProps || ((props) => props);
 
-			async loadNewPropsFromCloudCannon(CloudCannon) {
-				try {
-					const latestValue = await CloudCannon.value(options?.valueOptions);
-					this.setState(latestValue);
-				} catch(fetchError) {
-					console.warn('Failed to fetch latest page props', fetchError);
-				}
-			}
+  const onLoadEventListener = useCallback((e) => {
+    onCloudCannonLoad(e.detail.CloudCannon);
+  }, []);
 
-			onCloudCannonLoad(CloudCannon) {
-				CloudCannon.enableEvents();
-				this.loadNewPropsFromCloudCannon(CloudCannon);
-			}
-			
-			componentWillUnmount() {
-				document.removeEventListener('cloudcannon:load', this.onLoadEventListener);
-				document.removeEventListener('cloudcannon:update', this.onUpdateEventListener);
-			}
+  const onUpdateEventListener = useCallback((e) => {
+    loadNewPropsFromCloudCannon(e.detail.CloudCannon);
+  }, []);
 
-			render() {
-				const hydratedProps = {
-					...this.props, 
-					page: {
-						...this.props.page,
-						data: {
-							...processProps(this.state)
-						},
-					}
-				}
-				return React.createElement(Component, hydratedProps, this.props.children);
-			}
-		}
-	}
-}
+  useEffect(() => {
+    document.addEventListener(
+      "cloudcannon:load",
+      onLoadEventListener
+    );
+    document.addEventListener(
+      "cloudcannon:update",
+      onUpdateEventListener
+    );
+
+    if (window.CloudCannon) {
+      onCloudCannonLoad(window.CloudCannon);
+    }
+
+    return () => {
+      document.removeEventListener(
+        "cloudcannon:load",
+        onLoadEventListener
+      );
+      document.removeEventListener(
+        "cloudcannon:update",
+        onUpdateEventListener
+      );
+    };
+  }, [onLoadEventListener, onUpdateEventListener]);
+
+  const loadNewPropsFromCloudCannon = async (
+    CloudCannon
+  ) => {
+    try {
+      const latestValue = await CloudCannon.value(
+        options?.valueOptions
+      );
+      setState(processProps(latestValue));
+      console.log("Loaded latest page props", latestValue);
+    } catch (fetchError) {
+      console.warn(
+        "Failed to fetch latest page props",
+        fetchError
+      );
+    }
+  };
+
+  const onCloudCannonLoad = (CloudCannon) => {
+    CloudCannon.enableEvents();
+    loadNewPropsFromCloudCannon(CloudCannon);
+  };
+
+  return (
+    <CloudCannonContext.Provider
+      value={{ pageData: state }}
+    >
+      {children}
+    </CloudCannonContext.Provider>
+  );
+};
