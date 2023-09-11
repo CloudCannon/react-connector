@@ -70,9 +70,9 @@ And use it in your NextJs app-router pages:
 
 ```
 export default async function Page({ params }) {
-  const page = await getDocFromParams(params)
+  const page = await getPageFromParams(params)
 
-  return <PageContent content={doc} />
+  return <PageContent content={page} />
 }
 ```
 
