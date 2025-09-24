@@ -25,11 +25,11 @@ export default function App({ Component, pageProps }) {
 to:
 
 ```js
-import { CloudCannonConnect } from '@cloudcannon/react-connector'
+import { CloudCannonConnect } from '@cloudcannon/react-connector';
 
 export default function App({ Component, pageProps }) {
 	const AppComponent = CloudCannonConnect(Component);
-	return <AppComponent {...pageProps}/>
+	return <AppComponent {...pageProps} />
 }
 ```
 
@@ -42,7 +42,7 @@ using the `valueOptions` parameter. If you have a markdown processor built into 
 to false, this will prevent any double processing conflicts.
 
 ```js
-import { CloudCannonConnect } from '@cloudcannon/react-connector'
+import { CloudCannonConnect } from '@cloudcannon/react-connector';
 
 export default function App({ Component, pageProps }) {
 	const AppComponent = CloudCannonConnect(Component, {
@@ -51,7 +51,7 @@ export default function App({ Component, pageProps }) {
 			preferBlobs: true
 		}
 	});
-	return <AppComponent {...pageProps}/>
+	return <AppComponent {...pageProps} />
 }
 ```
 
@@ -62,7 +62,7 @@ the `processProps` function which is passed the props before it is injected into
 function which passes the props directly through.
 
 ```js
-import { CloudCannonConnect } from '@cloudcannon/react-connector'
+import { CloudCannonConnect } from '@cloudcannon/react-connector';
 
 export default function App({ Component, pageProps }) {
 	const AppComponent = CloudCannonConnect(Component, {
@@ -70,6 +70,6 @@ export default function App({ Component, pageProps }) {
 			return props;
 		}
 	});
-	return <AppComponent {...pageProps}/>
+	return <AppComponent {...pageProps} />
 }
 ```
